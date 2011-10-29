@@ -34,5 +34,5 @@ exec { "Create puppet Git repo":
 
 exec { "Fix selinux context":
   cwd => "/var/git/puppet",
-  command => "chcon -t ssh_home_t /var/git/.ssh/authorized_keys",
+  command => "/usr/bin/chcon -t ssh_home_t /var/git/.ssh/authorized_keys",
 }

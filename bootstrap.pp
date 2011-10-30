@@ -36,3 +36,23 @@ exec { "Fix selinux context":
   cwd => "/var/git/puppet",
   command => "/usr/bin/chcon -t ssh_home_t /var/git/.ssh/authorized_keys",
 }
+
+$update = "#!/bin/bash
+cd /var/git/puppet/
+git archive --format=tar HEAD | (cd /etc/puppet && tar xf -)
+/usr/bin/puppet -l syslog /etc/puppet/manifests/site.pp"
+"
+
+file { "/etc/puppet/puppet-update":
+  ensure  => present,
+  content => $update,
+  mode    => 744,
+}
+
+cron { "Puppet":
+  ensure  => present,
+  command => "/etc/puppet/puppet-update",
+  user    => "root",
+  minute  => "*",
+  require => File["/etc/puppet/puppet-update"],
+}

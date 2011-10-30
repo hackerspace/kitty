@@ -3,7 +3,8 @@ class ntp {
     ensure => installed
   }
 
-  service { "ntp":
-    ensure => running,
+  service { "ntpd":
+    ensure  => running,
+    require => Package["ntp"],
   }
 }

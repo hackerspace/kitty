@@ -40,7 +40,7 @@ exec { "Fix selinux context":
 $update = "#!/bin/bash
 cd /var/git/puppet/
 git archive --format=tar HEAD | (cd /etc/puppet && tar xf -)
-/usr/bin/puppet -l syslog /etc/puppet/manifests/site.pp"
+/usr/bin/puppet -l syslog /etc/puppet/manifests/site.pp
 "
 
 file { "/etc/puppet/puppet-update":

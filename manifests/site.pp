@@ -1,8 +1,8 @@
-node default {
-  include motd
+include "ntp.pp"
+include "common_packages.pp"
 
-  $common_packages = ["vim-enhanced", "wget", "strace", "ltrace", "screen", "git" ]
-  package { $common_packages:
-    ensure => installed,
-  }
+node default {
+  include motd,
+  include common_packages,
+  include ntp,
 }

@@ -1,5 +1,5 @@
-include "ntp.pp"
-include "common_packages.pp"
+import "ntp.pp"
+import "common_packages.pp"
 
 node default {
   include motd

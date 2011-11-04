@@ -1,0 +1,12 @@
+[submodule "modules/webapp"]
+	path = modules/webapp
+	url = git://github.com/sorki/puppet-module-webapp.git
+[submodule "modules/python"]
+	path = modules/python
+	url = git://github.com/sorki/puppet-module-python.git
+[submodule "modules/monit"]
+	path = modules/monit
+	url = git://github.com/sorki/puppet-module-monit.git
+[submodule "modules/nginx"]
+	path = modules/nginx
+	url = git://github.com/sorki/puppet-module-nginx.git

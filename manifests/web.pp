@@ -5,7 +5,6 @@ Exec {
 
 user { "web":
   ensure => "present",
-  gid => "web",
 }
 
 file {

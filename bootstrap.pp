@@ -5,11 +5,13 @@ user { "git":
 
 file {
   "/var/git": ensure => directory, owner => git,
-  require => User["git"];
+    require => User["git"];
   "/var/git/puppet": ensure => directory, owner => git,
-  require => [User["git"], File["/var/git"]];
-  "/var/git/puppet_nonbare": ensure => directory, owner => git,
-  require => [User["git"], File["/var/git"]];
+    require => [User["git"], File["/var/git"]];
+  "/etc/puppet": ensure => directory, owner => root;
+  "/etc/puppet/conf/": ensure => directory, owner => root,
+    require => File["/etc/puppet"];
+  "/etc/puppet/auth.conf": ensure => absent;
 }
 
 ssh_authorized_key { "git":
@@ -34,12 +36,11 @@ exec { "Create puppet Git repo":
   require => [File["/var/git/puppet"], Package["git"], User["git"]],
 }
 
-exec { "Create nonbare version of repo":
-  cwd => "/var/git/puppet_nonbare",
-  user => "git",
+exec { "Clone nonbare version of repo":
+  cwd => "/etc/puppet/conf",
   command => "/usr/bin/git clone /var/git/puppet .",
-  creates => "/var/git/puppet_nonbare/.git/HEAD",
-  require => [File["/var/git/puppet_nonbare"],
+  creates => "/etc/puppet/conf/.git/HEAD",
+  require => [File["/etc/puppet/conf"],
     Package["git"], User["git"], Exec["Create puppet Git repo"]],
 }
 
@@ -49,23 +50,32 @@ exec { "Fix selinux context":
 }
 
 $update = "#!/bin/bash
-cd /var/git/puppet_nonbare/
-git pull origin 2> /dev/null || exit 0
-git submodule update --init
-git archive --format=tar HEAD | (cd /etc/puppet && tar xf -)
-/usr/bin/puppet -l syslog /etc/puppet/manifests/site.pp
+cd /etc/puppet/conf
+git pull origin &> /var/log/puppet-pull || exit 0
+git submodule update --init > /var/log/puppet-update
+/usr/bin/puppet -l syslog /etc/puppet/conf/manifests/site.pp
 "
 
-file { "/etc/puppet/puppet-update":
+$script_path = "/usr/local/bin/puppet-update"
+
+file { $script_path:
   ensure  => present,
   content => $update,
   mode    => 744,
 }
 
+$puppetcfg = "[main]
+  confdir = /etc/puppet/conf/"
+
+file { "/etc/puppet/puppet.conf":
+  ensure => present,
+  content => $puppetcfg,
+}
+
 cron { "Puppet":
   ensure  => present,
-  command => "/etc/puppet/puppet-update",
+  command => $script_path,
   user    => "root",
   minute  => "*",
-  require => File["/etc/puppet/puppet-update"],
+  require => File[$script_path, "/etc/puppet/puppet.conf"],
 }

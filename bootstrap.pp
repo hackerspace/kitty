@@ -27,8 +27,8 @@ package { "git":
 exec { "Create puppet Git repo":
   cwd => "/var/git/puppet",
   user => "git",
-  command => "/usr/bin/git init --bare",
-  creates => "/var/git/puppet/HEAD",
+  command => "/usr/bin/git init",
+  creates => "/var/git/puppet/.git/HEAD",
   require => [File["/var/git/puppet"], Package["git"], User["git"]],
 }
 
@@ -39,6 +39,7 @@ exec { "Fix selinux context":
 
 $update = "#!/bin/bash
 cd /var/git/puppet/
+git submodule update --init
 git archive --format=tar HEAD | (cd /etc/puppet && tar xf -)
 /usr/bin/puppet -l syslog /etc/puppet/manifests/site.pp
 "

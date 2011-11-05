@@ -8,6 +8,8 @@ file {
   require => User["git"];
   "/var/git/puppet": ensure => directory, owner => git,
   require => [User["git"], File["/var/git"]],
+  "/var/git/puppet_nonbare": ensure => directory, owner => git,
+  require => [User["git"], File["/var/git"]],
 }
 
 ssh_authorized_key { "git":
@@ -27,9 +29,17 @@ package { "git":
 exec { "Create puppet Git repo":
   cwd => "/var/git/puppet",
   user => "git",
-  command => "/usr/bin/git init",
-  creates => "/var/git/puppet/.git/HEAD",
+  command => "/usr/bin/git init --bare",
+  creates => "/var/git/puppet/HEAD",
   require => [File["/var/git/puppet"], Package["git"], User["git"]],
+}
+
+exec { "Create nonbare version of repo":
+  cwd => "/var/git/puppet_nonbare",
+  user => "git",
+  command => "/usr/bin/git clone /var/git/puppet .",
+  creates => "/var/git/puppet_nonbare/.git/HEAD",
+  require => [File["/var/git/puppet_nonbare", "/var/git/puppet/HEAD"], Package["git"], User["git"]],
 }
 
 exec { "Fix selinux context":
@@ -38,7 +48,7 @@ exec { "Fix selinux context":
 }
 
 $update = "#!/bin/bash
-cd /var/git/puppet/
+cd /var/git/puppet_nonbare/
 git submodule update --init
 git archive --format=tar HEAD | (cd /etc/puppet && tar xf -)
 /usr/bin/puppet -l syslog /etc/puppet/manifests/site.pp

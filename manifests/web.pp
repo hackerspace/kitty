@@ -1,3 +1,8 @@
+# temporary - only for standalone testing
+Exec {
+  path => "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+}
+
 user { "web":
   ensure => "present",
   gid => "web",

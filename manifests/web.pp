@@ -12,10 +12,6 @@ file {
   require => User["web"];
 }
 
-include webapp::python
-
-
-
 class { "webapp::python": owner => "web",
                           group => "web",
                           src_root => "/var/web/src",

@@ -52,7 +52,7 @@ exec { "Fix selinux context":
 $update = "#!/bin/bash
 cd /etc/puppet/conf
 git pull origin &> /var/log/puppet-pull || exit 0
-git submodule update --init > /var/log/puppet-update
+git submodule update --init &> /var/log/puppet-update
 /usr/bin/puppet -l syslog /etc/puppet/conf/manifests/site.pp
 "
 

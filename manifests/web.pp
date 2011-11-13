@@ -20,7 +20,6 @@ class { "webapp::python": owner => "web",
                           group => "web",
                           src_root => "/var/web/src",
                           venv_root => "/var/web/env",
-                          monit_admin => "root@localhost",
 }
 
 webapp::python::instance { "test":

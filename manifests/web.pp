@@ -23,8 +23,8 @@ class { "webapp::python": owner => "web",
 }
 
 webapp::python::instance { "test":
-  domain => "test.base48.cz",
-  django => true,
+  domain => "localhost",
+  wsgi_module => "myapp:app",
   requirements => true,
   mediaprefix => "/media",
   mediaroot => "/var/web/env/test/project/media/",

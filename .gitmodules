@@ -7,3 +7,6 @@
 [submodule "modules/nginx"]
 	path = modules/nginx
 	url = git://github.com/sorki/puppet-module-nginx.git
+[submodule "modules/supervisor"]
+	path = modules/supervisor
+	url = git://github.com/sorki/puppet-module-supervisor.git

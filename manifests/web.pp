@@ -26,5 +26,7 @@ webapp::python::instance { "test":
   domain => "test.base48.cz",
   django => true,
   requirements => true,
+  mediaprefix => "/media",
+  mediaroot => "/var/web/env/test/project/media/",
   require => User["web"],
 }

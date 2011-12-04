@@ -1,5 +1,6 @@
 class common_packages {
   $common_packages = [
+    "epel-release",
     "vim-enhanced",
     "wget",
     "strace",

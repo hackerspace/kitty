@@ -7,6 +7,7 @@ user { "web":
   ensure => "present",
 }
 
+
 file {
   "/var/web": ensure => directory, owner => web,
   require => User["web"];
@@ -14,6 +15,11 @@ file {
   require => User["web"];
   "/var/web/env": ensure => directory, owner => web,
   require => User["web"];
+}
+
+package { "supervisor":
+  ensure => installed,
+  require => Yumrepo["supervisor"]
 }
 
 class { "webapp::python": owner => "web",
@@ -28,5 +34,5 @@ webapp::python::instance { "test":
   requirements => true,
   mediaprefix => "/media",
   mediaroot => "/var/web/env/test/project/media/",
-  require => User["web"],
+  require => User["web"], Package["supervisor"],
 }

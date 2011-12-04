@@ -3,10 +3,12 @@ Exec {
 }
 
 import "ntp.pp"
+import "repos.pp"
 import "common_packages.pp"
 
 node default {
   include motd
+  include repos
   include common_packages
   include ntp
 }

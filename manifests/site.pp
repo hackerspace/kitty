@@ -16,5 +16,5 @@ node default {
   include ntp
   include supervisor
   include znc
-  include web
+  include web_defaults
 }

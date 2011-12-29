@@ -1,8 +1,3 @@
-# temporary - only for standalone testing
-Exec {
-  path => "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
-}
-
 user { "web":
   ensure => "present",
 }
@@ -15,11 +10,6 @@ file {
   require => User["web"];
   "/var/web/env": ensure => directory, owner => web,
   require => User["web"];
-}
-
-package { "supervisor":
-  ensure => installed,
-  require => Yumrepo["supervisor"]
 }
 
 class { "webapp::python": owner => "web",

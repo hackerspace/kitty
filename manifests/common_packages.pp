@@ -1,6 +1,7 @@
 class common_packages {
   $common_packages = [
     "epel-release",
+    "yum-autoupdate",
     "vim-enhanced",
     "wget",
     "strace",
@@ -14,6 +15,7 @@ class common_packages {
     "gcc-c++",
     "autoconf",
     "automake",
+    "nc",
     ]
   package { $common_packages:
     ensure => installed,

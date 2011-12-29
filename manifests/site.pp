@@ -4,6 +4,9 @@ Exec {
 
 import "ntp.pp"
 import "repos.pp"
+import "supervisor.pp"
+import "znc.pp"
+import "web.pp"
 import "common_packages.pp"
 
 node default {
@@ -11,4 +14,7 @@ node default {
   include repos
   include common_packages
   include ntp
+  include supervisor
+  include znc
+  include web
 }

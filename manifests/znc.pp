@@ -1,5 +1,11 @@
 class znc {
-  package { "znc", "znc-extra", "znc-infobot":
+  package { "znc":
+    ensure => installed
+  }
+  package { "znc-extra":
+    ensure => installed
+  }
+  package { "znc-infobot":
     ensure => installed
   }
   user { "znc":
@@ -7,8 +13,9 @@ class znc {
   }
   supervisor::service { "znc":
     enable => true,
-    command => '/usr/bin/znc'
+    command => '/usr/bin/znc',
     user => 'znc',
-    require => Package['znc'], Package['supervisor'],
-      User['znc'],
+    require => [Package['znc'], Package['supervisor'],
+      User['znc']],
+  }
 }

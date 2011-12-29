@@ -12,7 +12,7 @@ class znc {
     ensure => "present"
   }
   supervisor::service { "znc":
-    enable => true,
+    ensure => present,
     command => '/usr/bin/znc',
     user => 'znc',
     require => [Package['znc'], Package['supervisor'],

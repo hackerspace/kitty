@@ -16,6 +16,7 @@ class common_packages {
     "autoconf",
     "automake",
     "nc",
+    "fpaste",
     ]
   package { $common_packages:
     ensure => installed,

@@ -3,7 +3,6 @@ class web_defaults {
     ensure => "present",
   }
 
-
   file {
     "/var/web": ensure => directory, owner => web,
     require => User["web"];
